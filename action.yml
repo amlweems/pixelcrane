@@ -1,0 +1,17 @@
+name: 'pixelcrane'
+description: 'Monitor interesting changes to an image over time'
+inputs:
+  image:
+    description: 'Image to monitor'
+    required: true
+  filter:
+    description: 'Regular expression used to match filenames'
+    required: true
+    default: '.'
+  output:
+    description: 'Output directory'
+    required: true
+    default: 'rootfs'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
