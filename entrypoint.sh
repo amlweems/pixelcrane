@@ -11,7 +11,10 @@ touch images.txt
 pixelcrane ls "${INPUT_IMAGE}" > /tmp/images.txt
 
 # iterate tags not present in images.txt and extract
-for image in `comm -1 -3 images.txt /tmp/images.txt`; do
+while IFS= read -r line; do
+    image=$(echo $line | cut -d ' ' -f1)
+    date=$(echo $line | cut -d ' ' -f2)
+
     echo "Extracting ${image}"
     tag=$(echo "${image}" | cut -d ':' -f 2)
 
@@ -21,13 +24,16 @@ for image in `comm -1 -3 images.txt /tmp/images.txt`; do
     pixelcrane extract "${image}" "${INPUT_FILTER}" | tar -xv -C "${INPUT_OUTPUT}"
 
     # add tag to images.txt list
-    echo "${image}" >> images.txt
+    echo "${image} ${date}" >> images.txt
 
     # commit
-    git add "${INPUT_OUTPUT}" images.txt
-    git commit -m "${image}"
+    git add "${INPUT_OUTPUT}"
+    env GIT_AUTHOR_DATE="${date}" GIT_COMMITTER_DATE="${date}" git commit -m "${image}"
     git tag "${tag}"
-done
+done < <(comm -1 -3 images.txt /tmp/images.txt)
+
+git add images.txt
+git commit -m 'image tracking'
 
 # push
 git push origin main --tags

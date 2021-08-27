@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"path"
 	"sort"
+	"time"
 
 	"github.com/google/go-containerregistry/cmd/crane/cmd"
 	"github.com/google/go-containerregistry/pkg/gcrane"
@@ -123,7 +124,7 @@ func printImages(j bool) google.WalkFunc {
 
 		for _, manifest := range manifests {
 			for _, tag := range manifest.Tags {
-				fmt.Printf("%s:%s\n", repo, tag)
+				fmt.Printf("%s:%s %s\n", repo, tag, manifest.Uploaded.Format(time.RFC3339))
 			}
 		}
 
