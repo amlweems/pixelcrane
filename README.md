@@ -26,6 +26,7 @@ jobs:
     timeout-minutes: 30
     steps:
     - uses: actions/checkout@v2
+      fetch-depth: '0'
     - uses: amlweems/pixelcrane@v1
       with:
         image: debian
@@ -35,5 +36,4 @@ jobs:
 pixelcrane will iterate over all tags ordered by creation time,
 extract files matching the provided regex filter, and commit
 them to the repo. By default, pixelcrane stores these files in
-a directory called `rootfs` and tracks its progress in a file
-called `images.txt`.
+a directory called `rootfs` and tracks its progress in git tags.
