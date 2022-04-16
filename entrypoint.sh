@@ -3,6 +3,7 @@
 # set commit author
 git config user.name "Automated"
 git config user.email "actions@users.noreply.github.com"
+git config --global --add safe.directory /github/workspace
 
 # fetch ordered list of image tags
 pixelcrane ls "${INPUT_IMAGE}" > /tmp/images.txt
